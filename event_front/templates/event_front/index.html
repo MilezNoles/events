@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title%} Events {% endblock %}
+
+
+{% block content %}
+
+
+<h3 class="text-center my-5">All current events:</h3>
+{% for v in page_obj %}
+
+<div class="card my-2">
+    <h5 class="card-header"><a class="nav-link" href="{{v.get_absolute_url}}">{{ v }}</a></h5>
+    <div class="card-body">
+        <h5 class="card-title">{{ v.event_type }} by {{ v.host}}</h5>
+        <p class="card-text">{{ v.content | truncatewords_html:150 | safe }}</p>
+        <p class="card-text">{{ v.city}} | {{ v.date | date:"d M Y"}} |
+            <small>created at: {{ v.created_at | date:"d M Y"}}</small>
+        </p>
+
+    </div>
+</div>
+{% empty %}
+
+<h3 class="text-center my-5">There are no events</h3>
+
+{% endfor %}
+
+<div class="row">
+    <div class="col">
+        {%include "inc/_pagination.html"%}
+    </div>
+</div>
+
+{% endblock %}
+
+
+
+

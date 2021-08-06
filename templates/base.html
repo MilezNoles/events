@@ -1,0 +1,64 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title%} Events {% endblock%}</title>
+    <link rel="icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
+    <link rel="shortcut icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
+    <link rel="stylesheet/less" type="text/css" href="styles.less" />
+    <link href="https://fonts.googleapis.com/css?family=Rye" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <a class="navbar-brand me-auto" href="{% url 'home' %}"
+        style="font-family:'Rye';">Home</a>
+        {%if request.user.is_event_creator %}
+        <a class="navbar-brand me-auto" href="{% url 'createevent' %}"
+        style="font-family:'Rye';">Create event</a>
+        {% endif %}
+
+
+        {%if request.user.is_authenticated %}
+
+
+                <a href="{% url 'profile' user.profile.slug %}" class="nav-link navbar-brand">{{user.username}}</a>
+
+
+
+            <a href="{% url 'logout' %}" class="nav-link navbar-brand">Logout</a>
+
+        {%else%}
+
+            <a href="{% url 'register' %}" class="nav-link navbar-brand">Register</a>
+
+
+            <a href="{% url 'login' %}" class="nav-link navbar-brand">Login</a>
+
+        {%endif%}
+
+
+    </div>
+
+
+</nav>
+
+
+<div class="container">
+    {% block content %} {% endblock %}
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+        crossorigin="anonymous"></script>
+
+</body>
+</html>

@@ -1,0 +1,229 @@
+{% extends "base.html"  %}
+{% load static %}
+
+{% block title %}
+Profile
+{% endblock %}
+
+
+{% block content %}
+
+
+<div class="container my-3">
+
+    <div class="row gutters-sm">
+        <div class="col-md-4 mb-3">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex flex-column align-items-center text-center">
+                        {% if profile.profile_picture %}
+                        <img src="/media/{{profile.profile_picture}}" alt="Avatar" class="rounded-circle" width="150">
+                        {% else %}
+                        <img src="{% static '/img/missing.jpg' %}" alt="Avatar" class="rounded-circle" width="150">
+                        {% endif %}
+
+                        <div class="mt-3">
+                            <h4>{{profile.user.username}}</h4>
+                            <p class="text-muted font-size-sm">{{profile.city}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-md-8">
+            <div class="card mb-3">
+                <div class="card-body">
+                    {% if profile.user.first_name or profile.user.last_name %}
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <h6 class="mb-0">Name</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                            {{profile.user.first_name}} {{profile.user.last_name}}
+                        </div>
+                    </div>
+                    <hr>
+                    {% endif %}
+
+
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <h6 class="mb-0">Event creator status</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                            {%if profile.user.is_event_creator%}
+                            Yes
+                            {%else%}
+                            No
+                            {%endif%}
+                        </div>
+                    </div>
+
+                    <hr>
+
+
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <h6 class="mb-0">Email</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                            {{profile.user.email}}
+                        </div>
+                    </div>
+
+                    <hr>
+
+
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <h6 class="mb-0">Registration date</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                            {{profile.user.date_joined | date:"d M Y"}}
+                        </div>
+                    </div>
+                    <hr>
+
+                    {% if profile.user.profile.city %}
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <h6 class="mb-0">City</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                            {{ profile.user.profile.city }}
+                        </div>
+                    </div>
+                    <hr>
+                    {% endif %}
+
+
+                    {% if profile.user.profile.bio %}
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <h6 class="mb-0">About yourself</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                            {% autoescape off %}
+                            {{ profile.user.profile.bio | linebreaks }}
+                            {% endautoescape %}
+                        </div>
+                    </div>
+                    <hr>
+                    {% endif %}
+
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+    {% if user.username == profile.user.username %}
+    <div class="row">
+        <div class="col-md-12">
+
+            <p>
+                <button class="btn btn-secondary" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                    Edit profile
+                </button>
+            </p>
+            <div class="collapse" id="collapseExample">
+                <div class="card card-body">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{form.as_p}}
+                        <button type="submit" class="btn btn-primary btn-lg btn-secondary">Send</button>
+                    </form>
+                    <form method="post" class="mt-5" action="{% url 'delete' %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger btn-lg btn-secondary">Delete user</button>
+                    </form>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+
+{%if profile.user.is_event_creator%}
+
+<div class="row">
+    <div class="col-md-12">
+        <h2>My events</h2>
+
+
+        {% for v in events %}
+        <p class="card-text">Event title: {{ v.title }}</p>
+        <p class="card-text">Event date: {{ v.date }}</p>
+        <p class="card-text">Event type: {{ v.event_type }}</p>
+
+        {% if v.event_type == "to response" %}
+        <p>All responses:</p>
+        {% for i in v.responses.all %}
+        <small>Nick: {{ i.username }}</small> |
+        <small>Response: {{ i.content }}</small> |
+        <small>File: {{ i.files }}</small> |
+        <small>Date of response: {{ i.date }}</small> |
+        <br>
+        {% endfor %}
+
+        {%else%}
+        <p>All replies:</p>
+        {% for i in v.participates.all %}
+        <small>Nick: {{ i.username }}</small> |
+        <small>Reply: {{ i.content }}</small> |
+        <small>Date of reply: {{ i.date }}</small> |
+        <br>
+        {% endfor %}
+        {% endif %}
+
+        <hr>
+        {% empty %}
+        None
+        {% endfor %}
+
+    </div>
+</div>
+
+{%endif%}
+
+
+<!--    <div class="row">-->
+<!--        <div class="col-md-12">-->
+<!--        <h2>My current</h2>-->
+
+<!--            <h3>Responses:</h3>-->
+
+<!--            {% for v in profile.user.user_responses.all %}-->
+<!--            <p class="card-text">Event title: {{ v.event_title }}</p>-->
+<!--            <p class="card-text">Event date: {{ v.event_title.date }}</p>-->
+<!--            <p class="card-text">My response: {{ v.content }}</p>-->
+<!--            <p class="card-text">File: {{ v.files }}</p>-->
+<!--            <p class="card-text">Date of response: {{ v.date }}</p>-->
+<!--            <hr>-->
+<!--            {% empty %}-->
+<!--             None-->
+<!--            {% endfor %}-->
+
+<!--            <h3>Replies:</h3>-->
+<!--             {% for v in profile.user.user_replies.all %}-->
+<!--            <p class="card-text">Event title: {{ v.event_title }}</p>-->
+<!--            <p class="card-text">Event date: {{ v.event_title.date }}</p>-->
+<!--            <p class="card-text">My reply: {{ v.content }}</p>-->
+<!--            <p class="card-text">Date of reply: {{ v.date }}</p>-->
+<!--            <hr>-->
+<!--            {% empty %}-->
+<!--             None-->
+<!--            {% endfor %}-->
+
+<!--        </div>-->
+<!--    </div>-->
+
+<div class="col-md-12 mb-10" style="height:30px;clear:both;"></div>
+{% endblock %}

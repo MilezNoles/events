@@ -1,0 +1,21 @@
+{%if messages %}
+<div class="row">
+    <div class="d-flex flex-column justify-content-center">
+{% for message in messages %}
+{% if message.tags == "error" %}
+
+<div class="col-md-6 alert alert-danger" role="alert">
+    {{ message }}
+</div>
+
+{% else%}
+
+<div class="col-md-6 alert alert-{{ message.tags }}" role="alert">
+    {{ message }}
+</div>
+
+{% endif %}
+{% endfor %}
+</div>
+    </div>
+{% endif %}

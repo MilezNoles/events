@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block title%} {{object.title}} {% endblock %}
+
+
+{% block content %}
+
+<div class="card my-2">
+    <h5 class="card-header"><a class="nav-link" href="{{v}}">{{ object }}</a></h5>
+    <div class="card-body">
+        <h5 class="card-title">{{ object.event_type }} by {{ object.host}}</h5>
+        <p class="card-text">{{ object.content | truncatewords_html:150 | safe }}</p>
+        <p class="card-text">{{ object.city}} | {{ object.date | date:"d M Y"}} |
+            <small>created at: {{ object.created_at | date:"d M Y"}}</small>
+        </p>
+
+    </div>
+</div>
+
+
+{% if object.event_type == "to response"  %}
+
+    {% if new_reply %}
+
+        <div class="alert alert-success" role="alert">
+            Your are successfully responsed!
+        </div>
+
+    {% else %}
+
+
+        <div class="row">
+            <div class="col-md-12">
+                <form action="." method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit" class="btn btn-primary btn-lg btn-secondary">Response</button>
+                </form>
+
+            </div>
+        </div>
+    {% endif %}
+
+
+
+{% else %}
+
+    {% if new_reply %}
+
+        <div class="alert alert-success" role="alert">
+            Your are successfully replied!
+        </div>
+
+    {% else %}
+
+
+        <div class="row">
+            <div class="col-md-12">
+                <form action="." method="post">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit" class="btn btn-primary btn-lg btn-secondary">Reply</button>
+                </form>
+
+            </div>
+        </div>
+    {% endif %}
+
+{% endif %}
+
+
+
+
+{% endblock %}
+
+
+

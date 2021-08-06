@@ -151,7 +151,7 @@ Profile
 </div>
 
 
-{%if profile.user.is_event_creator%}
+{%if profile.user.is_event_creator or request.user.is_superuser %}
 
 <div class="row">
     <div class="col-md-12">
@@ -159,7 +159,7 @@ Profile
 
 
         {% for v in events %}
-        <p class="card-text">Event title: {{ v.title }}</p>
+        <p class="card-text">Event title: <a class="nav-link" href="{{v.get_absolute_url}}">{{ v.title }}</a></p>
         <p class="card-text">Event date: {{ v.date }}</p>
         <p class="card-text">Event type: {{ v.event_type }}</p>
 
@@ -194,36 +194,36 @@ Profile
 {%endif%}
 
 
-<!--    <div class="row">-->
-<!--        <div class="col-md-12">-->
-<!--        <h2>My current</h2>-->
+    <div class="row">
+        <div class="col-md-12">
+        <h2>My current</h2>
 
-<!--            <h3>Responses:</h3>-->
+            <h3>Responses:</h3>
 
-<!--            {% for v in profile.user.user_responses.all %}-->
-<!--            <p class="card-text">Event title: {{ v.event_title }}</p>-->
-<!--            <p class="card-text">Event date: {{ v.event_title.date }}</p>-->
-<!--            <p class="card-text">My response: {{ v.content }}</p>-->
-<!--            <p class="card-text">File: {{ v.files }}</p>-->
-<!--            <p class="card-text">Date of response: {{ v.date }}</p>-->
-<!--            <hr>-->
-<!--            {% empty %}-->
-<!--             None-->
-<!--            {% endfor %}-->
+            {% for v in profile.user.user_responses.all %}
+            <p class="card-text">Event title: {{ v.event_title }}</p>
+            <p class="card-text">Event date: {{ v.event_title.date }}</p>
+            <p class="card-text">My response: {{ v.content }}</p>
+            <p class="card-text">File: {{ v.files }}</p>
+            <p class="card-text">Date of response: {{ v.date }}</p>
+            <hr>
+            {% empty %}
+             None
+            {% endfor %}
 
-<!--            <h3>Replies:</h3>-->
-<!--             {% for v in profile.user.user_replies.all %}-->
-<!--            <p class="card-text">Event title: {{ v.event_title }}</p>-->
-<!--            <p class="card-text">Event date: {{ v.event_title.date }}</p>-->
-<!--            <p class="card-text">My reply: {{ v.content }}</p>-->
-<!--            <p class="card-text">Date of reply: {{ v.date }}</p>-->
-<!--            <hr>-->
-<!--            {% empty %}-->
-<!--             None-->
-<!--            {% endfor %}-->
+            <h3>Replies:</h3>
+             {% for v in profile.user.user_replies.all %}
+            <p class="card-text">Event title: {{ v.event_title }}</p>
+            <p class="card-text">Event date: {{ v.event_title.date }}</p>
+            <p class="card-text">My reply: {{ v.content }}</p>
+            <p class="card-text">Date of reply: {{ v.date }}</p>
+            <hr>
+            {% empty %}
+             None
+            {% endfor %}
 
-<!--        </div>-->
-<!--    </div>-->
+        </div>
+    </div>
 
 <div class="col-md-12 mb-10" style="height:30px;clear:both;"></div>
 {% endblock %}

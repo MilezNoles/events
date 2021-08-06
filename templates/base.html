@@ -20,7 +20,7 @@
     <div class="container-fluid">
         <a class="navbar-brand me-auto" href="{% url 'home' %}"
         style="font-family:'Rye';">Home</a>
-        {%if request.user.is_event_creator %}
+        {%if request.user.is_event_creator or request.user.is_superuser %}
         <a class="navbar-brand me-auto" href="{% url 'createevent' %}"
         style="font-family:'Rye';">Create event</a>
         {% endif %}

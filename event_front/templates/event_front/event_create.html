@@ -6,7 +6,7 @@ Event create page
 
 
 {% block content %}
-{%if request.user.is_event_creator %}
+{%if request.user.is_event_creator or request.user.is_superuser %}
 <div style="border-top: 1px solid #40c4ff;"></div>
 <section class="blog-post-area">
     <div class="container">

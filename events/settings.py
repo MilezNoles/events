@@ -7,7 +7,7 @@ SECRET_KEY = 'django-insecure-ybzx@3%i_7tsch)suozx1^vo=_*&wkxgus(i65^w*e*v@_y*)v
 
 DEBUG = True
 
-ALLOWED_HOSTS = ["localhost","127.0.0.1"]
+ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -16,7 +16,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'debug_toolbar',
     'rest_framework',
     'event_app.apps.EventAppConfig',
     'event_front.apps.EventFrontConfig',
@@ -30,7 +29,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 ROOT_URLCONF = 'events.urls'
@@ -109,10 +107,6 @@ REST_FRAMEWORK = {
 }
 
 AUTH_USER_MODEL = 'event_app.User'
-
-INTERNAL_IPS = [
-    '127.0.0.1',
-]
 
 EMAIL_HOST_USER = "test88@littlebitofawesomeness.ru"
 EMAIL_HOST_PASSWORD = "369963zZ@"
